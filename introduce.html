@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UCDC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+  <script src="main.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .header-container {
+      margin-bottom: 20px;
+    }
+
+    .gallery {
+      position: relative;
+      width: 600px;         /* 카드뉴스의 너비를 600px로 설정 */
+      overflow: hidden;     /* 600px을 넘는 곳은 숨긴다 */
+      margin: 10px 0;
+    }
+
+    .gallery-pics img {
+      width: 100%;
+      display: block;       /* 레이아웃 유지를 위해 block 속성 */
+    }
+
+    .gallery-pics {
+      display: flex;        /* 사진들을 가로로 배치하여 좌우로 이동, 숨겨지지 않은 600px이 보여지게 된다 */
+      transition: transform 0.5s ease-out;      /* 부드럽게 전환 */
+    }
+
+    .gallery-pics li {
+      flex: 0 0 600px;      /* 이미지 크기 고정 */
+    }
+
+    button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      color: rgb(186, 186, 186);
+    }
+
+    button:hover {
+      color: #fff;
+    }
+
+    .prev {
+      left: 10px;
+    }
+
+    .next {
+      right: 10px;
+    }
+
+    @media (max-width: 1279px) {
+      .wrap-container {
+        height: auto;
+        min-height: 100%;
+        justify-content: center;
+      }
+
+      .genres {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin: 0;
+      }
+
+      .genres img {
+        width: 100%;
+        max-width: 295px;
+        display: block;
+      }
+
+      .genre-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      footer {
+        height: 30px;
+        background-color: #444444;
+        color: #fff;
+        text-align: center;
+        align-content: center;
+        font-size: 15px;
+      }
+    }
+      
+    @media (min-width: 1280px) {  /* 전체화면 */
+      .wrap-container {
+        height: auto;
+        min-height: 100%;
+        justify-content: center;
+      }
+
+      .genre-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        max-height: 599px;
+      }
+
+      .genres.left,
+      .genres.right {
+        display: flex;
+        flex-direction: column;
+        gap: 26px;
+        margin-bottom: 0;
+      }
+
+      .genres.left {
+        position: absolute;
+        left: 20px;
+        margin-right: 0;
+      }
+
+      .genres.right {
+        position: absolute;
+        right: 20px;
+        margin-left: 0;
+      }
+
+      .genres img {
+        width: 430px;
+        display: block;
+      }
+
+      footer {
+        height: 30px;
+        background-color: #444444;
+        color: #fff;
+        text-align: center;
+        align-content: center;
+        font-size: 15px;
+      }
+    }
+
+    .hover-text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0,0,0,0.5);
+      color: #fff;
+      font-family: 'Oswald';
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      text-align: center;
+    }
+
+    .hover-text1 {
+      font-size: 60px;
+    }
+
+    .hover-text2 {
+      font-size: 25px;
+    }
+
+    .genres a {
+      position: relative;
+      display: block;
+    }
+
+    .genres a:hover .hover-text {
+      opacity: 1;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header-container">
+    <header>
+      <a href="index.html" target="_self" title="main-page">
+        <img src="images/UCDC_namelogo.png" alt="UCDC-namelogo">
+      </a>
+    </header>
+    <nav>
+      <div id="menu">
+        <ul>
+          <li><a href="introduce.html" class="menuLink" target="_self" style="color: #d05555;">INTRODUCE</a></li>
+          <li><a href="member.html" class="menuLink" target="_self">MEMBER</a></li>
+          <li><a href="#" class="menuLink" onclick="passWord()">FUNCTION</a></li>
+          <li><a href="contact.html" class="menuLink" target="_self">CONTACT</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="wrap-container">
+    <div class="genre-container">
+      <div class="genres left">
+        <a href="https://youtu.be/WQd-6L87aXQ?si=gKv3_0Y_WENWLJcq" target="_blank"><img src="images/genre1.png" alt="waacking-video"><span class="hover-text"><p class="hover-text1">WAACKING</p><p class="hover-text2">Performance Video</p></span></a>
+        <a href="https://youtu.be/2Rey6Omfe1I?si=S9DGNCoRB7e-aLmz" target="_blank"><img src="images/genre2.png" alt="locking-video"><span class="hover-text"><p class="hover-text1">LOCKING</p><p class="hover-text2">Performance Video</p></span></a>
+      </div>
+      <div class="gallery">
+        <ul class="gallery-pics">
+          <li><img src="images/introd1.png" alt="img1"></li>
+          <li><img src="images/introd2.png" alt="img2"></li>
+          <li><img src="images/introd3.png" alt="img3"></li>
+          <li><img src="images/introd4.png" alt="img4"></li>
+        </ul>
+        <button class="prev">&lang;</button>
+        <button class="next">&rang;</button>
+      </div>
+      <div class="genres right">
+        <a href="https://youtu.be/ag4ArPMG8mA?si=20IspsUFy7xRMLRe" target="_blank"><img src="images/genre3.png" alt="bboying-video"><span class="hover-text"><p class="hover-text1">B-BOYING</p><p class="hover-text2">Performance Video</p></span></a>
+        <a href="https://youtu.be/8HAANuQof38?si=VPrGN1jy-FGHmUuT" target="_blank"><img src="images/genre4.png" alt="hiphop-video"><span class="hover-text"><p class="hover-text1">HIP-HOP</p><p class="hover-text2">Performance Video</p></span></a>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div>&copy; LeeHyojin</div>
+  </footer>
+
+  <script>
+    const slides = document.querySelector('.gallery-pics');
+    const slideCount = slides.children.length;   // 슬라이드 개수
+    const slideWidth = 600;   // 슬라이드 한 장 가로 길이
+    let currentIdx = 0;   // 현재 슬라이드 번호
+
+    function moveSlide(index) {
+      slides.style.transform = 'translateX(' + (-index * slideWidth) + 'px)';   // 전환 스타일 설정
+      currentIdx = index;   // 현재 인덱스로 설정
+    }
+
+    document.querySelector('.prev').addEventListener('click', function() {
+      if (currentIdx > 0) {   // 현재 페이지가 첫 번째가 아니면
+        moveSlide(currentIdx - 1);  // 인덱스 1 감소
+      }
+    });
+
+    document.querySelector('.next').addEventListener('click', function() {
+      if (currentIdx < slideCount - 1) {  // 현재 페이지가 마지막이 아니면
+        moveSlide(currentIdx + 1);   // 인덱스 1 증가
+      }
+    });
+  </script>
+</body>
+</html>

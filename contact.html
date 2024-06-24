@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UCDC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+  <script src="main.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .wrap-container {
+      height: auto;
+      min-height: 100%;
+      padding-bottom: 30px; /* footer의 높이 */
+      border: 1px solid #d05555;
+      border-radius: 10px;
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    .function-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 548px;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .function-list a {
+      text-decoration-line: none;
+    }
+
+    .function-list p {
+      width: 50%;
+      max-width: 500px;
+      min-width: 300px;
+      color: #e96d6d;
+      border: 1px solid #d05555;
+      border-radius: 50px;
+      margin: 5px auto;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    .function-list p:hover {
+      background-color: #e96d6dd2;
+      color: #fff;
+    }
+
+    footer {
+      height: 30px;
+      position: relative;
+      transform: translateY(0%);
+      background-color: #444444;
+      color: #fff;
+      text-align: center;
+      align-content: center;
+      margin-top: 35px;
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .copy-complete::after {
+      content: "복사 완료!";
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #e96d6dd2;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      animation: fadeOut 3s forwards;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header-container">
+    <header>
+      <a href="index.html" target="_self" title="main-page">
+        <img src="images/UCDC_namelogo.png" alt="UCDC-namelogo">
+      </a>
+    </header>
+    <nav>
+      <div id="menu">
+        <ul>
+          <li><a href="introduce.html" class="menuLink" target="_self">INTRODUCE</a></li>
+          <li><a href="member.html" class="menuLink" target="_self">MEMBER</a></li>
+          <li><a href="#" class="menuLink" onclick="passWord()">FUNCTION</a></li>
+          <li><a href="contact.html" class="menuLink" target="_self" style="color: #d05555;">CONTACT</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="wrap-container">
+    <div class="function-list">
+      <a href="https://youtube.com/@pknuucdc?si=VqtMf6Ln6-ctWPPl" target="_blank"><p>YOUTUBE</p></a>
+      <a href="https://www.instagram.com/pknuucdc/" target="_blank"><p>INSTAGRAM</p></a>
+      <a href="https://www.facebook.com/ucdcpknu/" target="_blank"><p>FACEBOOK</p></a>
+      <p onclick="copy(event, 'pknuucdc@naver.com')">E-MAIL</p>
+      <p onclick="copy(event, '부산광역시 남구 용소로 45, 국립부경대학교 D14(E31) 304호')">ADDRESS</p>
+    </div>
+  </div>
+  <footer>
+    <div>&copy; LeeHyojin</div>
+  </footer>
+  <script>
+    function copy(event, text) {
+      navigator.clipboard.writeText(text).then(function() {
+        event.target.classList.add('copied');
+        event.target.classList.add('copy-complete');
+        setTimeout(function() {
+          event.target.classList.remove('copy-complete');
+        }, 1000);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UCDC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+  <script src="main.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <style>
+    /* 조직도 */
+    .member-container {
+      min-height: 584px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .member-container h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-family: 'PT Serif', serif;
+      font-weight: 700;
+      font-size: 40px;
+    }
+
+    .organization-chart {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      position: relative;
+      margin-top: 30px;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .leader, .section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #d05555;
+      border-radius: 5px;
+    }
+
+    .leader {
+      width: 180px;
+      height: 40px;
+    }
+
+    .section {
+      width: 150px;
+      height: 50px;
+      background-color: #eee;
+    }
+
+    .genres {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border: 1px solid #d05555;
+      border-radius: 5px;
+      padding: 15px;
+    }
+
+    .line {
+      position: absolute;
+      width: 1px;
+      background-color: #d05555;
+      top: 50px;
+      bottom: 50px;
+    }
+
+    .line.left {
+      left: 14%;
+      top: 26%;
+      height: 20px;
+    }
+
+    .line.center {
+      left: 50%;
+      top: 26%;
+      height: 20px;
+    }
+
+    .line.right {
+      left: 86%;
+      top: 26%;
+      height: 20px;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    /* 검색 */
+    .search-container {
+      text-align: center;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-container input[type="text"] {
+      padding: 10px;
+      border: 1px solid #444;
+      border-radius: 5px;
+    }
+
+    .search-container button {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background-color: #d05555;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .search-container button:hover {
+      background-color: #bd4545;
+    }
+
+    /* 안내 */
+    .info-container {
+      text-align: center;
+      font-size: 14px;
+      color: #d05555;
+      background-color: #fff;
+      border: 1px solid #d05555;
+      border-radius: 10px;
+      margin: 0;
+    }
+
+    @media (max-width: 1279px) {  /* 전체화면 아닐 때 */
+      .top-container h1 {
+        margin-right: 20px;
+      }
+
+      .organization-chart {
+        margin: auto;
+      }
+
+      .bottom-container {
+        display: flex;
+        flex-direction: row;
+        width: 80%;
+      }
+
+      .info-container {
+        margin-top: 20px;
+        margin-right: 10px;
+        width: 80%;
+        padding: 10px;
+      }
+
+      .search-container input {
+        width: 140px;
+        text-align: center;
+        margin-top: 17px;
+        margin-right: 3px;
+      }
+
+      .search-container button {
+        width: 70px;
+        height: 37px;
+        margin-top: 17px;
+      }
+    }
+
+    @media (min-width: 1280px) {  /* 전체화면 */
+      .info-container {
+        position: absolute;
+        left: 90px;
+        top: 236px;
+        height: 325px;
+        width: 280px;
+        align-content: center;
+        padding: 25px;
+        line-height: 30px;
+      }
+
+      .search-container {
+        position: absolute;
+        right: 90px;
+        top: 236px;
+        gap: 10px;
+      }
+    }
+
+    /* API 적용 스타일 */
+    .highlight {
+      background-color: #ffee80;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header-container">
+    <header>
+      <a href="index.html" target="_self" title="main-page">
+        <img src="images/UCDC_namelogo.png" alt="UCDC-namelogo">
+      </a>
+    </header>
+    <nav>
+      <div id="menu">
+        <ul>
+          <li><a href="introduce.html" class="menuLink" target="_self">INTRODUCE</a></li>
+          <li><a href="member.html" class="menuLink" target="_self" style="color: #d05555;">MEMBER</a></li>
+          <li><a href="#" class="menuLink" onclick="passWord()">FUNCTION</a></li>
+          <li><a href="contact.html" class="menuLink" target="_self">CONTACT</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <main class="wrap-container">
+    <!-- 조직도 -->
+    <div class="member-container">
+      <h1>We are UCDC !</h1>    
+      <div class="organization-chart">
+        <!-- 준비기 -->
+        <div class="line left"></div>
+        <div class="column">
+          <span class="section-title">준비기</span>
+          <span class="leader" id="pre-leader">기장단</span>
+          <div class="genres" id="pre">
+            <span class="section" id="pre-waacking">왁킹</span>
+            <span class="section" id="pre-locking">락킹</span>
+            <span class="section" id="pre-hiphop">힙합</span>
+            <span class="section" id="pre-bboying">비보잉</span>
+          </div>
+        </div>
+        <!-- 활동기 -->
+        <div class="line center"></div>
+        <div class="column">
+          <span class="section-title">⭐활동기⭐</span>
+          <span class="leader" id="atv-leader">회장단</span>
+          <div class="genres" id="atv">
+            <span class="section" id="atv-waacking">왁킹</span>
+            <span class="section" id="atv-locking">락킹</span>
+            <span class="section" id="atv-hiphop">힙합</span>
+            <span class="section" id="atv-bboying">비보잉</span>
+          </div>
+        </div>
+        <!-- 예비역 -->
+        <div class="line right"></div>
+        <div class="column">
+          <span class="section-title">예비역</span>
+          <span class="leader" id="reserve-leader">예비역장</span>
+          <div class="genres" id="reserve">
+            <span class="section" id="reserve-waacking">왁킹</span>
+            <span class="section" id="reserve-locking">락킹</span>
+            <span class="section" id="reserve-hiphop">힙합</span>
+            <span class="section" id="reserve-bboying">비보잉</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-container">
+        <!-- 안내 -->
+        <div class="info-container">
+          <p>동아리 내 소속이 궁금한 사람의 이름을 검색해보세요!</p>
+          <p>소속된 모든 곳을 알아볼 수 있습니다.</p>
+        </div>
+
+        <!-- 검색 -->
+        <div class="search-container">
+          <input type="text" id="search-input" placeholder="이름을 입력하세요">
+          <button type="submit" id="search-button">검색</button>
+        </div>
+      </div>
+    </div>
+    
+  </main>
+  <footer>
+    <div>&copy; LeeHyojin</div>
+  </footer>
+</body>
+</html>

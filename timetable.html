@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>타임테이블</title>
+  <link rel="stylesheet" href="tt.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="notice">
+    <p>⚠️ Notice ⚠️</p>
+    <p>
+      1. 타임테이블의 모든 경우의 수가 나타나지 않을 수 있음!<br>
+      2. 마음에 드는 게 없다면 생성 버튼을 계속 누르며 새로운 타임테이블 생성
+    </p>
+    <p>
+      Tip! &rang; 생성 가능한데도 불가능하다고 뜨는 경우가 있으므로 생성 여러 번 눌러주세요...
+    </p>
+  </div>
+
+  <table id="userInput">
+    <thead>
+      <tr>
+        <th scope="col">종류(장르, 단가, 가요)</th>
+        <th scope="col">무대 제목</th>
+        <th scope="col">공연자 (쉼표로 구분)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+            <input type="text" name="stageGenre" class="stageGenre">
+        </td>
+        <td>
+            <input type="text" name="stageTitle" class="stageTitle">
+        </td>
+        <td>
+            <input type="text" name="stageMembers" class="stageMembers">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button id="addRow">+</button>
+  <button id="generateTimetable">타임테이블 랜덤 생성</button>
+
+  <div id="timetables"></div>
+
+  <script>
+    class Stage {
+      constructor(genre, song, performers) {
+        this.genre = genre;
+        this.song = song;
+        this.performers = performers;
+      }
+    }
+
+    // 개인의 이전 무대가 없었거나, 이전 무대가 바로 직전 무대가 아니라면 이번 무대에 오를 수 있음
+    function canSchedule(stage, timetable, lastPerformance) {
+      const currentTime = timetable.length;
+      return stage.performers.every(performer => lastPerformance[performer] === undefined || currentTime - lastPerformance[performer] > 1);
+    }
+
+    // 타임테이블 배치 함수
+    function arrangeTimetable(stages, timetable, lastPerformance, allTimetables) {
+      if (timetable.length === stages.length) {
+        allTimetables.push([...timetable]);
+        return;
+      }
+
+      for (let i = 0; i < stages.length; i++) {
+        const stage = stages[i];
+        if (!timetable.includes(stage) && canSchedule(stage, timetable, lastPerformance)) {   // 현재 순서로 들어갈 수 있는 무대라면
+          const previousPerformance = { ...lastPerformance };   // 이전 무대 얕은 복사
+          stage.performers.forEach(performer => lastPerformance[performer] = timetable.length);   // 각 공연자의 정보를 갱신
+          timetable.push(stage);    // 타임테이블에 넣는다.
+          arrangeTimetable(stages, timetable, lastPerformance, allTimetables);    // 재귀
+          timetable.pop();
+          Object.assign(lastPerformance, previousPerformance);
+        }
+      }
+    }
+
+    function generateAllTimetables(stages) {
+      const allTimetables = [];
+      arrangeTimetable(stages, [], {}, allTimetables);
+      return allTimetables;
+    }
+
+    function readStages() {
+      const rows = document.querySelectorAll('#userInput tbody tr');
+      return Array.from(rows).map(row => {
+        const genre = row.querySelector('.stageGenre').value.trim();
+        const song = row.querySelector('.stageTitle').value.trim();
+        const performers = row.querySelector('.stageMembers').value.trim().split(',').map(p => p.trim());
+        return new Stage(genre, song, performers);
+      }).filter(stage => stage.song && stage.performers.length);
+    }
+
+    // 입력 순서에 따라 경우의 수가 달라지는 것을 방지하기 위해 셔플
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    document.getElementById('addRow').addEventListener('click', () => {
+      const tbody = document.querySelector('#userInput tbody');
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>
+            <input type="text" name="stageGenre" class="stageGenre">
+        </td>
+        <td>
+            <input type="text" name="stageTitle" class="stageTitle">
+        </td>
+        <td>
+            <input type="text" name="stageMembers" class="stageMembers">
+        </td>
+      `;
+      tbody.appendChild(newRow);
+    });
+
+
+    // 생성 시작
+    document.getElementById('generateTimetable').addEventListener('click', () => {
+      const stages = readStages();
+
+      if (stages.length === 0) {
+        alert("공연이 입력되지 않았습니다.");
+        return;
+      }
+
+      const allTimetables = [];
+      const numberOfShuffles = stages.length > 2 ? 10 : 1;
+      for (let i = 0; i < numberOfShuffles; i++) {
+        shuffleArray(stages);
+        const timetables = generateAllTimetables(stages);
+        timetables.forEach(tt => {
+          if (!allTimetables.some(existingTT => JSON.stringify(existingTT) === JSON.stringify(tt))) {
+            allTimetables.push(tt);
+          }
+        });
+      }
+
+      const timetablesDiv = document.getElementById('timetables');
+      timetablesDiv.innerHTML = '';
+
+      if (allTimetables.length === 0) {
+        const timetableDiv = document.createElement('div');
+        timetableDiv.innerHTML = '⚠️ 타임테이블 생성 불가 ⚠️';
+        timetablesDiv.appendChild(timetableDiv);
+      } else {
+        allTimetables.forEach((timetable, index) => {
+          const timetableDiv = document.createElement('div');
+          timetableDiv.innerHTML = `<h2>Case ${index + 1}</h2>`;
+          timetable.forEach(stage => {
+            const stageDiv = document.createElement('div');
+            stageDiv.innerHTML = `<p>${stage.song}</p>`;
+            if (stage.genre === '장르') {
+              stageDiv.style.backgroundColor = '#f7b8b8';
+            }
+            timetableDiv.appendChild(stageDiv);
+          });
+          timetablesDiv.appendChild(timetableDiv);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
